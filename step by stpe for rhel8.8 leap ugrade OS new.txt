@@ -1,0 +1,254 @@
+ 
+
+ subscription-manager unregister
+  
+ passwd root
+ sync
+ subscription-manager unregister
+ subscription-manager register --org="Health_Care_Service_Corporation"  --activationkey=AK-RHEL7_TO_8_ALT  (This is for Alt server  eng )
+    register each env have different env hoga. 
+
+
+register each env have different env hoga. Below are env wise  
+
+subscription-manager register --org="Health_Care_Service_Corporation"  --activationkey= AK-RHEL7_TO_8_DEV
+subscription-manager register --org="Health_Care_Service_Corporation"  --activationkey= AK-RHEL7_TO_8_TEST
+subscription-manager register --org="Health_Care_Service_Corporation"  --activationkey= AK-RHEL7_TO_8_PROD
+subscription-manager register --org="Health_Care_Service_Corporation"  --activationkey= AK-RHEL7_TO_8_ALT
+
+
+ subscription-manager repos –-list; subscription-manager repos --enable=rhel-7-server-extras-rpms;subscription-manager refresh
+ yum clean all ;yum repolist;yum -y update --exclude=kmod-kvdo*
+ cat /etc/system-release
+ shutdown -r now
+ yum -y install leapp-upgrade
+ cd /tmp
+  wget http://pwausxpbrmgt01.app.hcscint.net:/leapp-data-22.tar.gz
+  ls -ltra | grep -i leap
+  tar -xvzf /tmp/leapp-data-22.tar.gz -C /etc/leapp/files
+
+Network configuration change 
+--------------------------------
+  ifconfig -a
+  ls -lrt /etc/sysconfig/network-scripts/ifcfg-*
+  mv /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/ifcfg-em0
+  mv /etc/sysconfig/network-scripts/ifcfg-eth1 /etc/sysconfig/network-scripts/ifcfg-em1
+
+  ls -lrt /etc/sysconfig/network-scripts/ifcfg-*
+  vi /etc/sysconfig/network-scripts/ifcfg-em0
+  vi /etc/sysconfig/network-scripts/ifcfg-em1
+  
+  ls -l /etc/udev/rules.d/70-persistent-net.rules;touch /etc/udev/rules.d/70-persistent-net.rules
+ 
+ 
+ vi /etc/udev/rules.d/70-persistent-net.rules
+   Modify Hardware address of em0 and em1 
+
+
+ ifconfig -a
+ vi /etc/udev/rules.d/70-persistent-net.rules
+ cat /etc/udev/rules.d/70-persistent-net.rules
+ ls -l /boot/efi/EFI/redhat/grub.cfg                     --- if not EFI no need to change anythign jst go with selinux disbale 
+  vi /boot/efi/EFI/redhat/grub.cfg
+  vi /etc/selinux/config
+     Modify disable 
+
+ yum list NetworkManager
+ yum install NetworkManager.x86_64
+ lsmod
+ modprobe -r floppy
+ modprobe -r pata_acpi
+ leapp answer --section authselect_check.confirm=Truex
+ leapp answer --section authselect_check.confirm=True
+ leapp answer --section remove_pam_pkcs11_module_check.confirm=True
+ rpm -qa | grep kernel-devel
+ systemctl status centrify-sshd.service
+ systemctl disable centrify-sshd.service; systemctl enable sshd ; systemctl stop centrify-sshd.service ; systemctl start sshd
+ systemctl status sshd
+ vi /etc/ssh/sshd_config
+ grep -i permitrootlogin /etc/ssh/sshd_config
+  systemctl restart sshd
+ systemctl status sshd
+
+ df -h | grep -i nfs
+ df -PTh -t nfs -t nfs4 -t cifs
+ egrep 'nfs|cifs' /etc/fstab
+ systemctl status nfs
+ systemctl stop nfs
+ cd /tmp
+ ls -ltra | grep -i ovl
+ df -h /usr
+ df -h /opt
+ lvextend -L +1G /dev/rootvg/usrlv -r
+ df -h /usr
+ lvextend -L +1G /dev/rootvg/optlv -r
+ df -h /
+  cd /boot
+ ls -ltra
+
+ grubby --default-kernel
+ grubby --remove-kernel=/boot/vmlinuz-3.10.0-1160.90.1.el7.x86_64
+ grubby --remove-kernel=/boot/vmlinuz-3.10.0-1160.95.1.el7.x86_64
+ ls -ltra
+  yum remove kernel-3.10.0-1160.90.1.el7.x86_64
+ yum remove kernel-3.10.0-1160.95.1.el7.x86_64
+  ls -ltra
+ cd /boot
+ ls -ltra
+  cd
+ shutdown -r now
+ ifconfig -a
+
+
+ leapp preupgrade --target 8.6
+  ls -l /var/log/leapp/leapp-report.txt
+  more /var/log/leapp/leapp-report.txt
+check all hibitor and do it only for hibitor and high risk leave it ..
+
+  leapp answer --section remove_pam_pkcs11_module_check.confirm=True
+  modprobe -r floppy
+  modprobe -r pata_acpi
+  efibootmgr
+  efibootmgr -b 0001 -B
+  efibootmgr
+  rpm -qa | grep kernel-devel
+  systemctl status sshd
+  systemctl status centrify-sshd.service
+  subscription-manager release --unset
+  subscription-manager repos --list
+  df -h /
+  df -h /usr
+  df -h /opt
+  leapp upgrade --target 8.6
+  cd /boot ls -ltra
+  cd /boot
+  ls -ktra
+  ls -ltra
+  grubby --default-kernel
+  shutdown -r now
+  cat /etc/system-release
+  alternatives --set python /usr/bin/python3
+  df -k
+  cat /etc/fstab | grep -i nfs
+  cat /etc/chrony.conf | grep ^#
+  systemctl restart chronyd
+  cat /etc/chrony.conf | grep -v "#"
+  subscription-manager unregister
+  nslookup awauslap09
+  ifconfig -a
+  cat /etc/hosts
+  subscription-manager register --org="Health_Care_Service_Corporation"  --activationkey=ak-rhel8-altprod
+  subscription-manager repos --list
+  subscription-manager repos --enable rhel-8-for-x86_64-supplementary-rpm
+  subscription-manager repos --enable rhel-8-for-x86_64-supplementary-rpms
+  subscription-manager refresh
+  yum clean all
+  yum -y update
+  cd /boot
+  ls -ltra
+  chkconfig --list
+  chkconfig --level 3 5 vds on
+  chkconfig --level 35 vds on
+  chkconfig --list
+  systemctl is-enabled vds
+  chkconfig --list vds
+  cat /etc/redhat-release
+  ps -ef | grep vds
+  grubby --default-kernel
+  cd /boot
+  ls -ltra
+  yum -y remove kernel-3.10.0-1160.99.1.el7.x86_64
+  ls -ltra
+  history
+  shutdown -r now
+  history
+  df -k
+  adinfo
+  nslookup awauslap09
+  cd /etc
+  ls -ltra | grep -i resolv.conf
+  cat resolv.conf
+  cat /etc/hosts
+  ifconfig -a
+  cd
+  passwd root
+  cd
+  sync
+  nslookup awauslap09
+  uptime
+  uname -r
+  fc -l 1
+  fc -l 10
+  uptime
+  cat /etc/redhat-release
+  uname -r
+  exec /bin/sh -
+  stty -echo
+  PS1=[PROMPT]#&&PS2=
+  exit
+  exec /bin/sh -
+  stty -echo
+  PS1=[PROMPT]#&&PS2=
+  exit
+  history |more
+  clear
+  history
+@awauslap09 ~]#
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
