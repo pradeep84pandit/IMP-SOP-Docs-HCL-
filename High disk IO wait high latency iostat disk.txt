@@ -1,0 +1,207 @@
+
+-------------------------------Disk IO wait/write and SLow disk in azure solution------------------------------
+======= azure servers if high iowait or io write for root fs slow disk  or any premiusm ssd disk if high takign iops =====
+
+Azure virtual machines have input/output operations per second (IOPS) and throughput performance limits based on the virtual machine type and size. OS disks and data disks can be attached to virtual machines. The disks have their own IOPS and throughput limits.
+
+So I would to suggest to increase/ upgrade upto next series of VM family.  
+From p4 to p15 for high iops 
+
+
+Ms suggested
+
+I hope this message finds you well. We have thoroughly analyzed the performance issues you reported regarding your virtual machine (VM) and would like to share our findings and recommendations with you.
+
+Our investigation has shown that there are no inherent issues with your server. However, we have identified higher-than-expected await times affecting the encrypted disk on your VM. The await time is the amount of time spent waiting for I/O operations to complete, and higher values may indicate a performance bottleneck.
+
+It is essential to note that encrypted storage devices typically experience slightly higher I/O overhead due to the encryption and decryption processes. However, the await metrics we have observed on your VM suggest that the current tier of the disks may not be able to keep up with the demand of the applications running on the server.
+
+To address this issue and improve the performance of your VM, we recommend increasing the tier of the disks. Upgrading to a higher tier will allow for more throughput from your encrypted storage devices, effectively reducing the await time and improving the overall performance of your disk.
+
+
+Before implementing our recommendations, please consider that:
+
+ - You should make sure to create backups of your virtual machine or at least take snapshots of the disks attached to it.
+
+ - Only disks with "Premium SSD" storage support the operation to increase the performance tier.
+
+ - Consider applying an upgrade to P15 or P20 to give your OS disk pazssl55lap00_OsDisk_1_991b5cf941d24205a0d72a0e09fedcc2 more resources to keep up with the I/O demand of your applications.
+
+
+You will find more details about increasing the performance of your OS disk at the Azure documentation site:
+
+  Change your performance tier using the Azure portal.
+  https://learn.microsoft.com/en-us/azure/virtual-machines/disks-performance-tiers-portal
+
+  Azure managed disk types - Premium SSDs
+  https://learn.microsoft.com/en-us/azure/virtual-machines/disks-types#premium-ssds
+
+Please consider our recommendation to upgrade the disk tier in order to ensure optimal performance for your applications and to avoid potential bottlenecks. If you require any assistance with the upgrade process or have any further questions or concerns, please do not hesitate to reach out to us. Our support team is always here to help.
+
+we can close the ticket since we have identified the root cause.
+
+
+
+
+
+
+
+
+
+high disk latencey - saw high red no of disk latecny in dyntarce means 
+--------------------
+to fix high disk latencey - need add more IOPS by resize shapes 
+
+When there is a queue in the storage I/O, you would generally see an increase in latency. If the storage drive is taking time to respond to I/O request, then this indicates there is a bottleneck in the storage layer. 
+A busy storage device can also be the reason why the response time is higher.
+
+Add more IOPS. Increasing magnetic drive speed, adding more stripes to your array, or upgrading the number of IOPS from your cloud provider will reduce the queue size and help alleviate congestion latency.
+
+Disk latency should be below 15 ms.  Disk latency above 25 ms can cause noticeable performance issues.  Latency above 50 ms is indicative of extremely underperforming storage.
+Disk queues should be no greater twice than the number of physical disks serving the drive.
+
+
+
+
+
+
+slow io disk 
+You should reprovision with premium not standard disk. 
+ Clearly, the number of writes to this current disk exceeds its IOPS. 
+ Reprovision to premium ssd will remediate the slowness.
+
+
+I/O wait means that your processor is stalled because it is waiting for disk, and can't do anything else in the processes it is scheduling. 
+It might not mean that it cannot do other things, but in the case of your graph, it seems that the processes that are running (one or more) are waiting for I/O.
+It might be difficult to find out what exactly is going on, probably correlate with the logs? Or better, check disk activity by process 
+in Dynatrace, you might get a fast clue there...
+
+ in the old host view, click "Consuming processes", then the separator "I/O" and you should be able to figure which process did the most I/O.
+
+
+
+if check past performance of sar iowait io disk 
+cd /var/log/sa
+sar -f sa01 -d
+
+with check which disk for which mount point fs causing high io 
+sar -p -d 1 1
+
+sar -f sa01 -p -d |more
+
+iostat -p sda -d 5
+iostat -d -x 5 3
+iostat xvda 1 3
+
+========
+
+
+
+ Troubelshooin high disk /IO wait high disk latencey disk related 
+if disk related slowness casue OS slowness like 
+
+
+The correct and easiest way to do it is to use the following command:
+iostat -Nd  --chek read/write per secon volume 
+option -N already displays the registered device mapper names
+
+
+
+
+=============================
+https://indianserverhosting.com/troubleshooting-high-i-o-wait-in-linux
+
+To identify whether I/O is causing system slowness you can use several commands but the easiest is the Unix command top.
+on top just wa 
+96.0%wa
+
+wa -- iowait
+ Amount of time the CPU has been waiting for I/O to complete.
+
+From the CPU(s) line you can see the current percentage of CPU in I/O Wait; The higher the number the more CPU resources are waiting for I/O access.
+
+Finding which disk is being written to
+iostat -x 2 5 ( will print a report every 2 seconds for 5 intervals)
+ this will tell you which disk is being affected;
+
+Device: rrqm/s wrqm/s r/s w/s rkB/s wkB/s avgrq-sz avgqu-sz await r_await w_await svctm %util
+ sda 44.50 39.27 117.28 29.32 11220.94 13126.70 332.17 65.77 462.79 9.80 2274.71 7.60 111.41
+
+In the above example, the %utilized for sda is 111.41% this is a good indicator that our problem lies with processes writing to sda.
+
+Finding the processes that are causing high I/O
+iotop
+eg outputp 
+15758 be/4 root 7.99 M/s 8.01 M/s 0.00 % 61.97 % bonnie++ -n 0 -u 0 -r 239 -s 478 -f -b -d /tmp
+
+The simplest method of finding which process is utilizing storage the most is to use the command iotop.
+
+
+it is easy to identify bonnie++ as the process causing the most I/O utilization on this machine.
+
+
+
+While iotop is a great command and easy to use, it is not installed on all (or the main) Linux distributions by default
+if iotop not isntalled try best alternative 
+If iotop is not available the below steps will also allow you to narrow down the offending process/processes
+
+
+for x in `seq 1 1 10`; do ps -eo state,pid,cmd | grep "^D"; echo "----"; sleep 5; done
+
+Processes that are waiting for I/O are commonly in an “uninterruptible sleep” state or “D”; given this information, we can simply find the processes that are constantly in a wait state.
+
+D 16528 bonnie++ -n 0 -u 0 -r 239 -s 478 -f -b -d /tmp
+
+The above for loop will print the processes in a “D” state every 5 seconds for 10 intervals.
+
+From the output above the bonnie++ process with a PID of 16528 is waiting for I/O more often than any other process. At this point, the bonnie++ seems likely to be causing the I/O Wait, but just because the process is in an uninterruptible sleep state does not necessarily prove that it is the cause of I/O wait.
+
+To help confirm our suspicions we can use the /proc file system. Within each processes directory, there is a file called “io” which holds the same I/O statistics that iotop is utilizing.
+
+ # cat /proc/5540/io
+ rchar: 48752567
+ wchar: 549961789
+ syscr: 5967
+ syscw: 67138
+ read_bytes: 49020928
+ write_bytes: 549961728
+ cancelled_write_bytes: 0
+
+The read_bytes and write_bytes are the number of bytes that this specific process has written and read from the storage layer. In this case, the bonnie++ process has read 46 MB and written 524 MB to disk. While for some processes this may not be a lot, in our example this is enough written and reads to cause the high i/o wait that this system is seeing.
+
+
+Finding what files are being written too heavily
+The lsof command will show you all of the files open by a specific process or all processes depending on the options provided. From this list, one can make an educated guess as to what files are likely being written to often based on the size of the file and the amounts present in the “io” file within /proc.
+# lsof -p 16528
+
+To even further confirm that these files are being written to the heavily we can see if the /tmp filesystem is part of sda.
+
+# df /tmp
+
+From the output of df, we can determine that /tmp is part of the root logical volume in the workstation volume group.
+
+ # pvdisplay
+
+Using pvdisplay we can see that the /dev/sda5 partition part of the sda disk is the partition that the workstation volume group is using and in turn, is where /tmp exists. 
+ Given this information, it is safe to say that the large files listed in the lsof above are likely the files being read & written too frequently.
+
+
+
+
+
+
+
+ Is my hard drive is dying? chekc if hard sik is helathy or unhelaty state or poor quiality 
+============================
+I/O errors in log file (such as /var/log/messages) indicates that something is wrong with the hard disk and it may be failing. You can check hard disk for errors using smartctl command, which is control and monitor utility for SMART disks under Linux and UNIX like operating systems. The syntax is:
+
+smartctl -a /dev/DEVICE
+# check for /dev/sda on a Linux server
+smartctl -a /dev/sda
+
+
+
+Is my hard drive and server is too hot?
+High temperatures can cause server to function poorly. So you need to maintain the proper temperature of the server and disk. 
+High temperatures can result into server shutdown or damage to file system and disk.
+

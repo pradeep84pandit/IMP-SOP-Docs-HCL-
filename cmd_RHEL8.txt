@@ -1,0 +1,224 @@
+		subscription-manager unregister
+  756   subscription-manager register --org="Health_Care_Service_Corporation"  --activationkey=ak-rhel8-dev
+  757  subscription-manager repos –list
+  758  subscription-manager repos -–list
+  759  subscription-manager repos --list
+  760  subscription-manager repos --enable=rhel-7-server-extras-rpms
+  761  subscription-manager repos --list
+  762  subscription-manager refresh
+  763  yum clean all
+  764  yum repolist
+  765  yum -y update --exclude=kmod-kvdo*
+  766  yum -y install leapp-upgrade
+  767  yum list leapp-upgrade
+  768  yum list installed |grep -i leapp-upgrade
+  769  cd /tmp
+  771  wget http://pwausxpbrmgt01.app.hcscint.net:/leapp-data-22.tar.gz
+  772  ls -l |grep -i leapp-data-22.tar.gz
+  773  tar -xvzf /tmp/leapp-data-22.tar.gz -C /etc/leapp/files
+  774  leapp preupgrade --target 8.6
+  775  cat /var/log/leapp/leapp-report.txt
+  800  cd /var/log/leapp/
+  801  ls -l
+  802  cat leapp-report.txt
+  803  df -h
+  804  cd /boot/
+  805  ls -lrt
+  806  df -gt
+  807  df -PTh
+  808  clear
+  813  cd /etc/sysconfig/network-scripts
+  814  ls -l
+  815  ls -ltr eth*
+  816  ls -lrt /etc/sysconfig/network-scripts/ifcfg-*
+  817  mv /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/ifcfg-em0
+  818  mv /etc/sysconfig/network-scripts/ifcfg-eth1 /etc/sysconfig/network-scripts/ifcfg-em1
+  819  ls -l |grep -i em*
+  820  vi ifcfg-em0
+  821  vi ifcfg-*em1
+  822  cat ifcfg-em0
+  823  cat ifcfg-em1
+  824  ls -l /etc/udev/rules.d/70-persistent-net.rules
+  825  touch /etc/udev/rules.d/70-persistent-net.rules
+
+
+  SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:50:56:94:24:a9", NAME="em0"
+  SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:50:56:94:23:d4", NAME="em1"
+
+  826  ls -l /etc/udev/rules.d/70-persistent-net.rules
+  827  ifcfg -a
+  828  ifconfig -a
+  829  vi /etc/udev/rules.d/70-persistent-net.rules
+  830  cat /etc/udev/rules.d/70-persistent-net.rules
+  831  cd /var/log/leapp/
+  832  ls -l
+  833  cat leapp-report.txt |more
+  834  leapp answer --section remove_pam_pkcs11_module_check.confirm=True
+  835  cat leapp-report.txt |more
+  836  grubby --default-kernel
+  837  cd
+  838  df -h
+  839  vi /boot/efi/EFI/redhat/grub.cfg
+  add this in 6/10 section  --- efi_no_storage_paranoia
+  840  shutdown -r now
+  841  cat /etc/udev/rules.d/70-persistent-net.rules
+  842  df -h
+  843  cat /boot/efi/EFI/redhat/grub.cfg
+  844  more /boot/efi/EFI/redhat/grub.cfg
+  845  pwd
+  846  uptime
+  847  grubby --default-kernel
+  848  cat /boot/efi/EFI/redhat/grub.cfg
+  849  ifconfig -a
+  850  df -h
+  851  systemctl stop docker
+  852  systemctl is-enabled docker
+  853  systemctl disable docker.service
+  854  systemctl is-enabled docker
+  855  df -h
+  856  lsmod
+  857  modprobe -r floppy
+  858  modprobe -r pata_acpi
+  859  lsmod
+  860  leapp preupgrade --target 8.6
+  861  rpm -qa |grep kernel
+  862  ll /boot/
+  863  yum remove kernel-3.10.0-1160.83.1.el7.x86_64
+  864  rpm -qa |grep kernel
+  865  yum remove kernel-3.10.0-1160.88.1.el7.x86_64
+  866  rpm -qa |grep kernel
+  867  ll /boot/
+  868  efibootmgr
+  869  efibootmgr -b 0001 -B
+  870  efibootmgr
+  871  systemctl status centrify
+  872  systemctl status centrifydc.service
+  873  systemctl status sshd
+  874  systemctl disable centrify-sshd.service; systemctl enable sshd ; systemctl stop centrify-sshd.service ; systemctl start sshd
+  875  systemctl status sshd
+  876  systemctl status centrifydc.service
+  877  systemctl stop centrifydc.service
+  878  systemctl is-enabled centrifydc.service
+  879  systemctl disable centrifydc.service
+  880  systemctl is-enabled centrifydc.service
+  881  systemctl is-enabled sshd
+  882  cat /etc/ssh/sshd_config |grep -i permit
+  883  vi /etc/ssh/sshd_config
+  884  cat /etc/ssh/sshd_config |grep -i permit
+  885  cat /etc/fstab
+  886  cat /etc/fstab |egrep 'nfs|cifs'
+  887  systemctl stop nfs
+  888  systemctl stop nfs-client.target
+  889  cat /etc/fstab
+  890  systemctl disable nfs
+  891  cd /tmp
+  892  wget http://pwausxpbrmgt01.app.hcscint.net:/eval-ovl-size.py
+  893  ll eval-ovl-size.py
+  894  chmod 755 eval-ovl-size.py
+  895  cd
+  896  /tmp/eval-ovl-size.py
+  897  vgs
+  898  lvextend -L +2G /dev/rootvg/varlv
+  900  resize2fs /dev/rootvg/varlv
+  901  df -h /var
+  902  /tmp/eval-ovl-size.py
+  904  lvextend -L +2G /dev/rootvg/optlv
+  905  resize2fs /dev/rootvg/optlv
+  906  df -h /opt
+  907  lvextend -L +1G /dev/rootvg/usrlv -r
+  908  df -h /usr
+  909  ll /boot/
+  910  df -h
+  911  systemctl is-enabled docker
+  912  systemctl stop docker
+  913  df -h
+  914  subscription-manager release --unset
+  915  subscription-manager repos --list
+  916  leapp upgrade --target 8.6
+  917  ll /boot
+  918  grubby -default-kernel
+  919  grubby --default-kernel
+  920  shutdown -r now
+  922  ip a
+  923  systemctl is-enabled sssd
+  924  adinfo
+  925  nslookup
+  926  cat /etc/system-release
+  927  grubby --default-kernel
+  928  efibootmgr
+  929  df -h
+  930  cat /etc/redhat-release
+  931  uptime
+  932  uname -r
+  933  alternatives --set python /usr/bin/python3
+  934  cat /etc/fstab |egrep 'nfs|cigs'
+  935  cat /etc/fstab |egrep 'nfs|cifs'
+  936  cat /etc/chrony.conf | grep ^#
+  937  systemctl restart chronyd
+  938  systemctl status chronyd
+  939  uptime
+  940  subscription-manager unregister
+  941  systemctl status docker
+  942  subscription-manager register --org="Health_Care_Service_Corporation"  --activationkey=ak-rhel8-[ENV]
+  943  subscription-manager register --org="Health_Care_Service_Corporation"  --activationkey=ak-rhel8-ak-rhel8-dev
+  944  subscription-manager register --org="Health_Care_Service_Corporation"  --activationkey=ak-rhel8-dev
+  945  subscription-manager refresh
+  946  cat /etc/redhat-release
+  947  ll /boot/
+  948  grubby --default-kernel
+  949  yum clean all
+  950  yum -y update
+  951  cat /etc/redhat-release
+  952  rpm -qa –last | grep kernel-4
+  953  rpm -qa –last | grep -i kernel
+  954  rpm -qa  | grep -i kernel
+  955  ll /boot/
+  956  yum remove kernel-3.10.0-1160.95.1.el7.x86_64
+  957  ll /boot/
+  958  cat /boot/efi/EFI/redhat/grub.cfg
+  959  grubby --default-kernel
+  960  ll /boot/
+  961  grubby -all
+  962  rpm -qa  | grep -i kernel
+  963  df -h
+  964  grubby --default-kernel
+  965  ll /boot
+  966  cat /etc/redhat-release
+  967  reboot -r now
+  968  shutdown -r now
+  969  adinfo
+  970  systemctl status centrify
+  971  systemctl status centrifydc
+  972  ifconfig -a
+  973  ip a
+  974  systemctl is-enabled centrifydc
+  975  systemctl is-enabled sssd
+  976  systemctl enable centrifydc
+  977  systemctl start centrifydc
+  978  systemctl status centrifydc
+  979  ifconfig
+  980  passwd root
+  981  grubby --default-kernel
+  982  grubby --info=ALL
+  983  grubby --remove-kernel=/boot/vmlinuz-3.10.0-1160.95.1.el7.x86_64
+  984  grubby --info=ALL
+  985  ll /boot/
+  986  df -h
+  987  uptime
+  988  uname -r
+  989  cat /etc/redhat-release
+  990  ssh dwauslpamap04.app.dev.hcscint.net
+  991  ping dwauslpamap04.app.dev.hcscint.net
+  992  ssh 10.130.2.161
+  993  exec /bin/sh -
+  994  stty -echo
+  995  PS1=[PROMPT]#&&PS2=
+  996  exitmore /etc/selinux/config
+  997  systemctl all
+  998  systemctl list
+  999  systemctl show
+ 1000  history
+[root@dwauslpamap05 ~]#
+
+
+TX~lf?lKq1v>Ba|

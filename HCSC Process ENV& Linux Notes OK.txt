@@ -1,0 +1,721 @@
+
+Production CTASKs - Not During Business Hours dont do any prod change in business hr 6AM to 6PM CST
+ IMP - This is business hrs Morning 6AM to Evening 6PM CST . Dont do any changes in between them . only for prod.
+Do make sure we are not accepting any production CTASK/change implementing in business hours . 
+apne mornign ist mai hi karna hai koe reboot changes prod wala 
+
+
+Kindly note that all the production changes will be performed during NON-Business hours .
+
+need dashboard configuraiton ---ays ka 
+
+SR request Service request SCtask url 
+--------------------------
+Kindly use below link and raise SR request for adding Memory and CPU on server.
+
+Kindly use below link and raise SR request for resource addition on the server, mentioning the # of CPU to be added and how much memory you want to add on the server.
+Kindly open the SR for swap addition /cpu increaw/ like  from the below link
+Service Catalog  Infrastructure   Unix / Windows Request SR
+https://servicenow.fyiblue.com/sp?id=sc_cat_item&sys_id=c28715e4dbf61c507dbbf3051d961967
+
+storage request 
+https://servicenow.fyiblue.com/sp?id=sc_cat_item&table=sc_cat_item&sys_id=97d1a2f5db091890aee2f3551d9619cd
+ 
+
+
+
+
+
+Doer is sharing their screen and going to perform the activity in my presence.
+Pre-Comments : I have verified the steps which will be performed by implementer and I am available along with implementer over the Team screen share.
+
+Post-Comments: All the steps performed by doer was as per standard SOP/Plan of action and it was performed in my presence. over the Team screen share
+
+Do not close the INCIDENT for application file system in our bin , even if there are under threshold
+-Do not close the ControlM incident in our Q , restart the service and revert back to them
+
+
+how to raise CHG / CO/ changer request 
+=================================
+If raise CHG process 
+ Non-prod-  standad-> global - S002 NonProd Support in Non-Production Environments Only and
+
+ in prod server go with normal type  ..> global>  if memory/cpu/FS extned fall into S997 
+ of if only any h/w chane go with S995 Redundant Failing or Failed Hardware	
+
+
+vgs wise lvm create karna hai ..if no space in vgs ask to user raise service request  and based on service request need to raise CO and 
+asisng one ctask to vmaware team  for tomcat isntallatin rasie any request to tomcat team  
+
+1. HCSC Project / Process wise flows 
+
+DL and assignment group and WHich FS Mount Points supported And Remark
+ CyberArk Team             - HCSC_CyberArk_Support@bcbsil.com  / HCSC_SecOps_CyberArk_PAS@bcbsil.com (If unable to login any server )
+
+ Cloud Operation Team   - cloudoperations@bcbsil.com   TCS_Cloud_and_Automation_Ops  Azure VM's Managed By TCS CloudTeam  
+
+ App Team               - hcl_middleware (wasadm user  - middleware)              /usr/tomcat
+ another app team       - hcl_websphere@bcbsil.com 
+                        - HCL_Middleware_Messaging Queue Team - HCL_MQ@bcbsil.com>  / MQ_MB_DP
+apache kafka              - rkW/L.,9qFb2}0iJF
+
+ DB Team -              - HCL_Database_DB2Distributed@bcbstx.com  db2 mean HCL_Database_AIXDB2 
+                          hcl_database_oracle@bcbstx.com  /oracle 
+
+ Hadoop                 -  hcsc_database_hadoop_admins       /hadoop /kafkalogs 
+
+if user is apache  hcsc_cloud_automation
+if user is mongodb hcl_mongo
+if user is oracle  HCL_Database_Oracle
+
+Zena CTM M control team - masterschedulingzena@bcbsil.com  HCL_Zena_Administrator   /ctm 
+Bladelogic team         - hcl_automation@bcbsil.com   /mnt/bladelgoic 
+ 
+CTS_eGateway MuleSoft  -  CTSeGatewayMuleSoft@hcsc.net 
+DataStage Team - hcl_datastage@bcbsil.com    /etl /DMIHPROD
+
+HCL_Backup Team         - hcl_backup@bcbsil.com   
+Storage nas team        -  hcl_storage/
+FinERP Tech             - FinERP_Tech@bcbsil.com    /erp
+
+Note - /opt/Tanium  - assigment grou  -- HCSC_Security Validation Service Members
+ just send mail to Thomas Burm <Tom_Burm_Jr@bcbsil.com>
+Bill Mesik <William_Mesik@bcbsil.com> Richard Smosna <Richard_Smosna@bcbsil.com>
+If you are getting an alert on the /opt/Tanium filesystem, 
+please do not just add 1g. Check to see if it is a 5g FS. 
+If it is  there is a BL job to resize it to 10G. If it is  already at 10g,
+check with Tom Burm Rich Smosna or myself before doing anything to the filesystem.
+if less than 10gb tho max 10gb tak hum log lvetend kar denge . as per tom mail
+
+Bill
+
+
+
+ / hadis            -  HCSC_ESP_Group <HCSC_ESP_Group@bcbsil.com>
+
+
+
+
+cpu and memroy, swap alert if have prod based server route to command center team ...
+         
+HCSC_IS SailPoint IIQ Support   -/usr/tomcat FS 
+
+IS Entitlements <IS_Entitlements@hcsc.net>   - 
+
+HCSC LInux/Unix Enviornment
+ - Linux RHEL 7.9 - az supported by TCS Cloud - NTP Server time.windows.com
+
+
+
+if server not accessible then mail to cyberak
+========
+mail to HCSC_CyberArk_Support@bcbsil.com> and raise INC assigned in their group HCSC_SecOps_CyberArk_PAS
+
+
+
+sssd restart if user not listed or any user problem
+
+[8:51 PM] Mamta Bhatia
+/etc/centrifydc/ssh/sshd_config
+
+[8:54 PM] Mamta Bhatia
+ssh -oKexAlgorithms=+diffie-hellman-group1-sha1 user@legacyhost
+
+
+
+sudo /usr/bin/systemctl status gemfire-server-claims.service
+
+2. LInux/All Technical notes 
+
+Restart M control service 
+df -h | grep ctm
+check which one either /opt/ctm or only /ctm 
+if /opt/ctm  -- cd /opt/ctm/ctm/scripts;
+if  /ctm  -- cd /ctm/scripts
+ps -ef | grep -i ctm
+./shut-ag
+./start-ag
+
+
+systemctl enable ctm.service;systemctl daemon-reload
+
+
+zena agent
+----------------
+
+twauslorbbch07 is rebooted 
+and zena agent service is running and communicating with zena server on port 7913. 
+If you still see the zena agent down at server side , please engage Dean to look into it
+uptime
+lsof -i:7913
+
+ps -ef |grep [L]INUX64
+ dont run zena cmd with systemctl like systemctl status zena
+use below for zena 
+zena status 
+zena stop 
+zena start 
+ps -ef |grep -i zena
+
+his will show the number of open files per process ID
+cd /proc
+for processid in [0-9]*
+do
+    echo "Process ID = $processid: $(ls /proc/$processid/fd/ | wc -l) file descriptors"
+done
+
+
+
+
+
+
+
+
+run CFT utiliy 
+cd /etc/init.d
+AutoRestartCFTRun.sh   -- run this script from root
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Could you please check the status of Bladelogic agent on below server and update?  pwauslif07.app.hcscint.net Linux Server 10.139.25.119
+
+what is cmd of bl agent 
+
+/etc/init.d/rscd
+
+
+
+pbrun ksh
+
+
+ote: If the above command is not working after reboot, run the command 'fsck -A -y'
+
+
+lsof open file cmd 
+---
+Find and remove large files that are open but have been deleted on Linux or Unix:
+## Works on Linux/Unix/OSX/BSD etc ##
+lsof -nP | grep '(deleted)'
+ 
+## Only works on Linux ##
+find /proc/*/fd -ls | grep  '(deleted)'
+
+my faviroute cmd lsof +L1 |grep -i deleted 
+
+netstat cmd - port open and listen port 
+===============
+
+How do I find out what service is using a port in Linux?
+ sudo lsof -i -P -n | grep LISTEN. 
+ sudo netstat -tulpn | grep LISTEN. 
+ sudo ss -tulpn | grep LISTEN
+How do I know which service is using port 8080 in Linux?find out which process is using a particular port, and vice versa.
+For Linux: netstat -anpe | grep "1234" | grep "LISTEN"
+5 Ways to Find Out Which Process Listening on a Particular Port
+ - netstat -ltnp | grep -w ':80' or netstat -ntplu |grep -i :80 (grep -w – shows matching of exact string (:80) )
+ - lsof -i :80
+ - ss -tulpn | grep :8080
+ - fuser 80/tcp
+      Then find the process name using PID number with the ps command like so.
+       ps -p 2053 -o comm=
+         or ls -l /proc/pid/
+ -  grep port no /etc/services
+
+
+eg of lsof output 
+[root@pwauslsusapp23 ~]# lsof -i :8080
+COMMAND   PID    USER   FD   TYPE   DEVICE SIZE/OFF NODE NAME
+java    21206 appianp 1871u  IPv4   504005      0t0  TCP *:webcache (LISTEN)
+pmd     28983    root   25u  IPv4 56188175      0t0  TCP pwauslsusapp23.app.hcscint.net:59454->vip-10-139-240-55.app.hcs
+
+
+grep --color -w -a USER /proc/3813/environ
+
+  gzip logs 
+====================
+gzip -c filename > filename.gz
+gzip -c hdfs-audit.log.2023-05-04 > hdfs-audit.log.2023-05-04.gz 
+
+Find CMD 
+=================
+Find out the largest directories or files eating disk space
+du -a /ftpusers/tmp | sort -n -r | head -n 10
+du -cks * | sort -rn | head
+# check for the whole disk #
+du -cks / | sort -rn | head
+
+find / -xdev -size +1000000000c -type f -exec ls -lh {} \;
+find /var/log -xdev -size +1000000000c -type f -exec ls -lh {} \;
+find /erp -xdev -type f -exec du -ha {} \; | sort -hr | head
+
+find /tmp -xdev -type f -exec du -ha {} \; | sort -hr | head
+
+gzip -c  debugfmt > debugfmt-26072023.gz
+
+
+find . -size +100000000 -exec ls -lt {} \;
+du -sh * |sort -nr |grep G
+du -sh /var/core/* ; du -sh /var/audit/*
+du -hsx /home/* |sort -rh | head -n 10
+du -hx --max-depth=1 | egrep 'G|M'
+
+find / -type f -size +20000k -exec ls -lh {} \; 2> /dev/null \
+  | awk '{ print $NF ": " $5 }'  | sort -hrk 2,2
+
+lsblk -f 
+lsblk -o +uuid,name
+
+mount /dev/sdb1 /mnt
+
+mount -o remount,rw /dev/sdb1 /mnt
+
+
+mount -t ext4 /dev/sdb1 /mnt
+
+blkid | grep sdb1
+
+
+
+
+find / -xdev -type f -size +1G
+find . -size +2G -exec ls -sh1 {} +
+find . -xdev -type f -size +100M -print | xargs ls -lh | sort -k5,5 -h -r
+du -ahx . | sort -rh | head -5
+find -type f -exec du -Sh {} + | sort -rh | head -n 5
+find / -xdev -type f -size +100M
+sudo du -aBm / 2>/dev/null | sort -nr | head -n 10
+sudo du -a / 2>/dev/null | sort -n -r | head -n 20
+
+find / -type f -printf "%s\t%p\n" | sort -n | tail -1
+du -a /var | sort -n -r | head -n 10
+cd /path/to/some/where
+
+du -hsx * | sort -rh | head -10
+du -hsx -- * | sort -rh | head -10
+
+ind Large Unused Files
+find / -xdev -mtime +30 -type f -size +100MF
+
+find / -type f -name "*.log" -size +1G 
+find / -type f -name "*.log" -size +1G 
+
+
+ find -O3 -L /opt/ -name "framework.xml"
+
+
+
+
+
+NTP
+ - ntp server name where sync time.windows.com
+  ntpupdate time.windows.com
+  telnet time.windows.com 123 
+
+
+
+
+cpu 
+ps -aef --forest | grep python
+
+some important imp d
+inode full low 
+=================
+If inode full there is only two solutin delete all small files under FS and take reboot 
+second if FS is under lvm and have space in vgs just lvextend ..once lvextend disk will get more no of limit.
+
+df -iT 
+tune2fs -l /dev/xvda1 | grep -i inode (view more detailed inode information with the following command:
+
+ next step is figuring out where all of those little files are
+for i in /*; do echo $i; find $i |wc -l; done (The command below will output the number of files and directory from the top of your file system:
+
+I can't delete those files. Can I increase the inode limit?
+If the disk is an LVM, increase the size of the volume.
+
+[root@pwauslapweb003 zena]# df -iT /opt/zena
+Filesystem                Type Inodes IUsed IFree IUse% Mounted on
+/dev/mapper/rootvg-zenalv ext4  32768 31145  1623   96% /opt/zena
+[root@pwauslapweb003 zena]# vgs
+  VG       #PV #LV #SN Attr   VSize    VFree
+  appsvg     3   8   0 wz--n- <409.99g 508.00m
+  rootvg     1  12   0 wz--n-  <99.00g <35.11g
+  tomcatvg   1   3   0 wz--n-  <30.00g <26.00g
+[root@pwauslapweb003 zena]# lvextend -L +2G /dev/mapper/rootvg-zenalv -r
+  Size of logical volume rootvg/zenalv changed from 512.00 MiB (128 extents) to 2.50 GiB (640 extents).
+  Logical volume rootvg/zenalv successfully resized.
+resize2fs 1.42.9 (28-Dec-2013)
+Filesystem at /dev/mapper/rootvg-zenalv is mounted on /opt/zena; on-line resizing required
+old_desc_blocks = 1, new_desc_blocks = 1
+The filesystem on /dev/mapper/rootvg-zenalv is now 655360 blocks long.
+
+[root@pwauslapweb003 zena]# df -iT /opt/zena
+Filesystem                Type Inodes IUsed  IFree IUse% Mounted on
+/dev/mapper/rootvg-zenalv ext4 163840 31145 132695   20% /opt/zena
+[root@pwauslapweb003 zena]#
+
+
+
+
+
+
+
+
+mis awk cmd 
+  226  df -PTh
+  227  vgs
+  228  vgs | awk '$1 == "rootvg" {print $NF}'
+  229  vgs --units g
+  230  vgs --units g | awk '$1 == "rootvg" {print $NF}'
+  231  vgs --units g | awk '$1 == "rootvg" {print $NF}' | sed 's/.$//'
+  232  lvs -a
+  233  lvs -a | grep ctm
+ 748  cd /opt/retail/ecm
+  749  ls -lrt
+  750  ls *.pdf | wc -l
+  751  ls -lrt *.pdf | wc -l
+  752  ls -lrt *.xml | wc -l
+  753  ls -lrt | grep -i pdf | wc -l
+  754  ls -lrt | grep ".pdf" | awk '{print $9}'| wc -l
+  755  ls -lrt | grep ".pdf" | awk '{print $9}`
+  756  ls -lrt | grep ".pdf" | awk '{print $9}'
+  757  ls -lrt | grep ".pdf" | awk '{print $9}' | xargs rm
+  758  ls -lrt | grep ".pdf" | awk '{print $9}'| wc -l
+  759  df -h .
+  760  ls -lrt | grep ".pdf" | awk '{print $9}' | xargs rm
+  761  df -h .
+  762  ls -lrt | grep ".pdf" | awk '{print $9}'| wc -l
+  763  ls -lrt | grep ".xml" | awk '{print $9}'| wc -l
+  764  ls -lrt | grep ".xml" | awk '{print $9}' | xargs rm
+  765  ls -lrt | grep ".xml" | awk '{print $9}'| wc -l
+  766  ls -lrt | grep ".xml" | awk '{print $9}' | xargs rm
+  767  ls -lrt
+  768  ls -lrt | grep ".pdf" | awk '{print $9}'| wc -l
+  769  ls -lrt | grep ".pdf" | awk '{print $9}' | xargs rm
+
+
+
+mkdir -p dist \
+&& docker build --target packager -t packager:latest . \
+&& docker run --rm -v $(pwd)/dist:/package -u ${UID}:${GID} packager bash package.sh \
+&& docker rmi packager:latest
+
+pip install --no-index --find-links dist/dependencies/ ./dist/synapse_pipeline_runner-0.1.6-py3-none-any.whl
+
+
+
+745  cd /talend/data/prod/azure_tools/
+  746  pip install --no-index --find-links dist/dependencies/ ./dist/synapse_pipeline_runner-0.1.6-py3-none-any.whl
+  747  pip3 install --no-index --find-links dist/dependencies/ ./dist/synapse_pipeline_runner-0.1.6-py3-none-any.whl
+  748  pip install --no-index --find-links dist/dependencies/ ./dist/synapse_pipeline_runner-0.1.6-py3-none-any.whl
+  749  cd /talend/bin/prod/finance/ingestion/
+  750  cd src/scripts/tpo/mainframe/
+  751  pwd
+  752  ls
+  753  cd /talend/bin/prod/finance/ingestion/params/tpo/
+
+
+80  cd /talend/data/prod/azure_tools/
+   81  ls -lrt
+   82  yum install python3
+   83  ls -lahrt
+   84  yum localinstall azure-cli-2.21.0-1.el7.x86_64.rpm
+
+802  yum install cifs-utils
+  835  yum install azpipr
+  836  yum whatprovides azpipr
+  837  yum search azpipr
+  838  yum list |grep azpipr
+  923  yum clean all
+26  yum search azpipr
+  827  yum list |grep azpipr
+  828  rpm -qa|grep pip
+  829  rpm -qa|grep az
+  830  rpm -qa|grep pip*
+  831  rpm -qa|grep pip*|wc -l
+  832  rpm -qa|wc -l
+ 850  su - svczena
+  851  df -PTh
+  852  ll /usr/local/bin/azpipr
+  853  id u450436
+  854  id msazure_6946016
+  855  ll /usr/local/bin/
+  856  which python
+  857  which python2
+  858  which python3
+  859  hostname -f
+  860  pip3 list
+  861  pip list
+  862  pip install azpipr
+  863  pip install azure-core
+  864  pip list
+  865  pip install azure-identity
+  866  pip list
+  867  ll /usr/local/bin/
+  868  hostname -f
+  869  mv /tmp/azpipr /usr/local/bin/
+  870  cd /usr/local/bin/
+  871  ll
+  872  chown root:root azpipr
+  873  ll
+  874  ls -ld /etc/centrifydc/*.ignore
+  875  chmod 644 /etc/centrifydc/*.ignore
+  876  ls -ld /etc/centrifydc/*.ignore
+  877  cd /usr/local/bin
+  878  ls -l
+  879  chown x46745047:100 azpipr
+  880  ls -l
+  881  exit
+  882  ls -l /usr/local/bin/azpipr
+  883  id msazure_694601
+  884  id msazure_6946016
+  885  su - msazure_6946016
+  886  cd /usr/local/bin/
+902  id mazure_6946016
+  903  id msazure_6946016
+  904  ls -ld /usr/local/bin/azpipr
+  905  chmod 775 /usr/local/bin/azpipr
+
+
+
+add Startup script for SmileCDR - custom app level 
+---------------------------------
+dwauslapp004 - ref server 
+
+ cd /usr/lib/systemd/system
+[root@dwauslapp004 system]# cat smilecdr.service
+
+[Unit]
+Description=Startup script for SmileCDR
+After=network.target
+
+[Service]
+Type=oneshot
+User=x6602006
+ExecStart=/opt/smilecdr/bin/smilecdr start
+ExecStop=/opt/smilecdr/bin/smilecdr stop
+RemainAfterExit=true
+
+[Install]
+WantedBy=default.target
+
+systemctl status smilecdr.service ;systemctl enable smilecdr.service ;ps -ef| grep -i smile
+
+
+
+
+
+/opt/smilecdr/
+
+
+
+
+tcpdump capture for all network interface 
+========================
+Capture all network traffic and write to "capture.pcap"
+tcpdump -w /tmp/tcpdump/capture.pcap
+To read the resulting "capture.pcap" file (from the directory it is saved), you could use:
+
+tcpdump -i eth1 -w /tmp/tcpdump/captureeth1.pcap dst pwauslgwyapp01.app.hcscint.net
+
+to read the capture.pcap file use belwo cmd 
+tcpdump -nnr capture.pcap
+
+pwauslgwyapp01 
+pwauslgwyapp002
+pwauslgwyapp003
+
+pcap file is readbale well in wireshark tool to anylsed more the logs 
+The captured output can be viewed on the console or saved as a pcap file.
+ Wireshark is a graphical user interface (GUI) application that reads and analyzes PCAP files
+
+
+
+
+root@pwausldnapp144 hadoop]# ll
+ls: cannot open directory .: Input/output error
+[root@pwausldnapp144 hadoop]# pwd
+/hadoop11/hadoop
+ 965  grep disk  /var/log/messages
+/  966  pwd
+  967  cd /
+  968  fsck -y /hadoop11
+  969  df -hT /hadoop11
+  970  fsck -y /hadoop11
+  971  df -hT
+  972  umount /hadoop11
+  973  xfs_repair -n /dev/sdl1
+  974  xfs_repair /dev/sdl1
+  975  mount /hadoop11
+  976  mount -L /hadoop11
+  977  xfs_repair /dev/sdl1
+  978  mount -L /dev/sdl1
+  979  cat /etc/fstab
+  980  df-h
+  981  df -h
+  982  mount -a
+  983  df -h
+  984  lsblk
+  985  mount
+  986  df -h
+  987  lvs
+  988  ls -ld /hadoop11
+
+
+allow cron on users 
+crontab -l -u x6681026
+echo "x6681026" >> /etc/cron.allow
+
+
+
+
+nc -zv pwauswbcbkp001.adhcscint.net  443
+
+
+
+=====sysctl
+
+/sys/kernel/mm/transparent_hugepage/enabled	never
+/sys/kernel/mm/transparent_hugepage/defrag	never
+/proc/sys/kernel/pid_max	64000
+/proc/sys/vm/max_map_count	128000
+
+
+---
+sysctl vm.max_map_count
+ls -l /proc/sys/vm/m*
+sudo sysctl -w vm.max_map_count=128000
+cat /proc/sys/vm/max_map_count
+ls -la /proc/sys/vm/ | grep max_map_count
+echo 128000 > /proc/sys/vm/max_map_count
+
+
+
+To make it persistent, you can add this line:
+
+vm.max_map_count=128000
+in your /etc/sysctl.conf and run
+
+$ sudo sysctl -p
+to reload configuration with new value
+
+# sysctl -w vm.max_map_count=128000
+And for the persistence configuration
+
+# echo "vm.max_map_count=128000" >> /etc/sysctl.conf
+
+
+So add vm.max_map_count=262144 in /etc/sysctl.d/99-sysctl.conf and then run
+
+sudo sysctl --system
+
+
+Run vim sysctl.conf
+
+Add vm.max_map_count=262144 to the end of the file and save
+
+Finally run sudo sysctl -w vm.max_map_count=262144 this command you will see vm.max_map_count=262144
+
+
+sudo echo "vm.max_map_count=262144" >> /etc/sysctl.d/elasticsearchSpecifications.conf && sudo sysctl --system
+
+Add the following line to /etc/sysctl.conf:
+vm.max_map_count=128000
+where map_count should be around 1 per 128 KB of system memory. For example:
+vm.max_map_count=2097152
+Reload the config as root:
+sysctl -p
+3.Check the new value:
+cat /proc/sys/vm/max_map_count
+
+----
+echo 64000 > /proc/sys/kernel/pid_max
+sysctl kernel.pid_max
+
+or
+
+cat /proc/sys/kernel/pid_max
+
+kernel.pid_max = 64000
+
+to /etc/sysctl.conf
+
+sysctl -p
+
+sysctl -a|grep pid_max
+
+ journalctl -b|grep pid_max
+# rpm -q systemd
+Verify the entry from file /usr/lib/sysctl.d/50-pid-max.conf:
+# grep pid_max /usr/lib/sysctl.d/50-pid-max.conf
+
+List all parameters and their values.
+
+# sysctl -a
+
+ sysctl -a|grep pid_max
+
+--
+cat /sys/kernel/mm/transparent_hugepage/enabled
+
+echo never > /sys/kernel/mm/transparent_hugepage/enabled
+echo never > /sys/kernel/mm/transparent_hugepage/defrag
+
+sudo yum install sysfsutils
+append a line with that setting to /etc/sysfs.conf:
+
+kernel/mm/transparent_hugepage/enabled = never
+kernel/mm/transparent_hugepage/defrag = never
+systemctl daemon-reload
+
+
+Alternatively you can add the command to your /etc/rc.local file.
+
+if test -f /sys/kernel/mm/transparent_hugepage/enabled; then
+   echo never > /sys/kernel/mm/transparent_hugepage/enabled
+fi
+if test -f /sys/kernel/mm/transparent_hugepage/defrag; then
+   echo never > /sys/kernel/mm/transparent_hugepage/defrag
+fi
+
+
+
+
+
+
+ps -efL | wc -l
+307
+sysctl -a | grep pid_max
+kernel.pid_max = 32768
+sysctl kernel.pid_max=2000
+kernel.pid_max = 2000
+sysctl -a | grep pid_max
+kernel.pid_max = 2000
+
+
+
+sudo yum install nginx
+ sudo systemctl -l enable nginx
+ sudo systemctl -l start nginx
+
+
+
+
+
+

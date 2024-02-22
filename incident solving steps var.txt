@@ -1,0 +1,139 @@
+pwausleceap18.app.hcscint.net
+Low disk space
+The total available space on disk /var is lower than 5 % INC2303222
+
+ df -h /var
+cd /var
+du -sh * | grep G
+
+[root@pwausleceap18 ~]# cd /var
+[root@pwausleceap18 var]# du -sh * | grep G
+17G log
+[root@pwausleceap18 var]#
+
+cd log
+du
+du -sh * | grep G
+
+[root@pwausleceap18 log]# du -sh * | grep G
+2.1G messages
+6.6G messages-20220327
+5.0G messages-20220403
+[root@pwausleceap18 log]#
+
+
+gzip messages-20220327 messages-20220403
+df -h /var
+
+[root@pwausleceap18 log]# df -h /var
+Filesystem Size Used Avail Use% Mounted on
+/dev/mapper/rootvg-varlv 19G 6.4G 12G 36% /var
+[root@pwausleceap18 log]#
+
+
+rm -rf /var/tmp/yum-nessus01-*
+yum clean all 
+
+after these 2 commands 
+
+
+
+
+   INC2480488   incident for capam
+
+Host
+pwauslsasgap08.app.hcscint.netLow disk space
+The total available space on disk /SASWork is lower than 3 %    INC2300858
+
+HCL_BI_SAS  assign to that group
+Prod azure
+
+yum --disablerepo=*\* --enablerepo=rhel-*\* --disablerepo=rhel-*satellite* --enablerepo=rhel*-satellite-tools-6.8* --disablerepo=rhel-7-server-eus-supplementary-rpms* update -y
+
+test
+
+yum --disablerepo=*\* --enablerepo=rhel-*\* --disablerepo=rhel-*satellite* --enablerepo=rhel*-satellite-tools-6.8* --disablerepo=rhel-7-server-eus-supplementary-rpms* update -y
+
+1001  uname -r
+ 1002  yum list available kernel
+ 1003  yum clean all
+ 1004  yum repolist
+ 1005  yum list available kernel
+ 1006  uptime
+ 1007  yum update
+ 1008  rpm -qa --last | grep kernel-3
+ 1009  yum list kernel
+ 1010  uname -r
+
+dmidecode -t 1 | grep -i Manu
+
+
+
+
+
+i /etc/security/limits.d/fradmin.conf
+
+
+i press
+
+
+
+fradmin soft nproc 8096
+fradmin hard nproc 8096
+
+
+
+:wq enter
+
+
+
+su - fradmin -c "ulimit -Hu"
+
+
+/var incidents...
+
+
+[10:39 PM] Kavya Sridhar
+[root@taznslcimapp17 var]# cd /var/opt
+[root@taznslcimapp17 opt]# du -sh * | sort -rh | head
+6.5G    microsoft69M     BESClient12K     omi0       BESCommon
+[root@taznslcimapp17 opt]# cd microsoft
+[root@taznslcimapp17 microsoft]# du -sh * | sort -rh | head
+6.4G    omsagent82M     omsconfig15M     dependency-agent24K     scx0       auoms[root@taznslcimapp17 microsoft]# cd omsagent                                    
+[root@taznslcimapp17 omsagent]# du -sh * | sort -rh | head
+6.4G    5e685811-bc5d-4e73-8b48-00700c300aa712K     npm_state0       tmp0       state0       run0       log
+[root@taznslcimapp17 omsagent]# cd 5e685811-bc5d-4e73-8b48-00700c300aa7
+[root@taznslcimapp17 5e685811-bc5d-4e73-8b48-00700c300aa7]# du -sh * | sort -rh | head                                                                         
+ 6.4G    run55M     log16K     state0       tmp
+[root@taznslcimapp17 5e685811-bc5d-4e73-8b48-00700c300aa7]# cd run
+[root@taznslcimapp17 run]# du -sh * | sort -rh | head
+3.3M    core.87103.3M    core.75763.3M    core.61913.3M    core.27933.2M    core.98973.2M    core.91393.2M    core.77153.2M    core.71033.2M    core.68593.2M    core.6113
+[root@taznslcimapp17 run]#
+
+ find /var/opt/microsoft/omsagent/5e685811-bc5d-4e73-8b48-00700c300aa7/run/core* -mtime +20 -exec rm {} \;
+
+[root@taznslcimapp17 run]# df -hT /varFilesystem               
+Type  Size  Used Avail Use% Mounted on/dev/mapper/rootvg-varlv xfs  
+s 8.5G  4.8G  3.7G  57% /var
+[root@taznslcimapp17 run]#
+
+[root@paznslcimap24 run]# ls -ltr |wc -l
+1964
+[root@paznslcimap24 run]# find /var/opt/microsoft/omsagent/5e685811-bc5d-4e73-8b48-00700c300aa7/run/core* -mtime +200 -exec rm {} \;                         
+[root@paznslcimap24 run]# df -hP /var
+Filesystem                Size  Used Avail Use% Mounted on
+/dev/mapper/rootvg-varlv  8.0G  7.3G  799M  91% /var
+[root@paznslcimap24 run]#
+[root@paznslcimap24 run]#
+[root@paznslcimap24 run]# ls -ltr |wc -l
+
+
+
+/var/opt/microsoft/omsagent/5e685811-bc5d-4e73-8b48-00700c300aa7/run[root@paznslcimap24 run]#  rm -rf core.2*
+
+
+don't run the same command on all servers
+
+
+INC2655778 center
+

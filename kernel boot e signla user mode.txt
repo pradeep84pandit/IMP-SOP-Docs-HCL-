@@ -1,0 +1,9 @@
+
+
+afer reboot and stuck in cotnrla D even no luck after enter Ctrol D then 
+
+ press e to edit kernel line by adding ro init=/bin/bash
+
+ype fsck -l to list the options for more control
+5 type fsck dev/sda2 (where my dear linu
+run the command 'fsck -A -y'
