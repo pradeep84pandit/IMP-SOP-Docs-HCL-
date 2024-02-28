@@ -1,0 +1,492 @@
+
+
+INC3630264	Disk available % The Disk available % value of 2.97 % was below your custom threshold of 5 %.	
+INC3629392	Situation:1991687 - Hostname:twauslwasapp06 - Memory saturation - OPEN Problem P-231122388 
+
+  489  yum clean all
+  490  yum metadata clean
+  491  yum repolist
+  492  subscription-manager refresh
+  493  yum clean all
+  494  subscription-manager unregister
+  495  
+  
+  
+  
+  496   subscription-manager repos --list
+  497  subscription-manager repos --enable=rhel-7-server-extras-rpms
+  498   subscription-manager repos --list
+  499  subscription-manager refresh
+  500  yum clean all
+  501  yum repolist
+  502  rm -rf /var/cache/dnf
+  503  yum list kernel
+  504  yum update
+  505  dnf update
+  506  iled to synchronize cache for repo 'rhel-7-server-rpms', ignoring this repo.
+  507  dnf clean all && dnf update --releasever=25
+  508  yum clean all
+  509  yum repolist
+  510  subscription-manager refresh
+  511  yum clean all
+  512  vi /etc/dnf/dnf.conf
+  513  cp -rp /etc/dnf/dnf.conf /etc/dnf/dnf.conf_bkp21sept23
+  514  dnf --refresh upgrade
+  515  dnf --refresh upgrade --skip
+  516  rpm -qa gcc*
+
+
+
+
+
+We are adding server to the Hadoop cluster, please look into below pre-req's for server - twausldnapp49
+ 
+sssd service down
+enable $JAVA_HOME
+Plz match ulimits with twausldnapp48
+
+[root@twausldnapp49 ~]# echo $JAVA_HOME
+ 
+[root@twausldnapp49 ~]# echo $PATH
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
+[root@twausldnapp49
+
+========================================
+Referece serer workign 
+[root@twausldnapp48 ~]# echo $JAVA_HOME
+/usr/lib/jvm/java
+
+
+[root@twausldnapp48 ~]# cat .bash_profile
+# .bash_profile
+
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+        . ~/.bashrc
+fi
+
+# User specific environment and startup programs
+
+PATH=$PATH:$HOME/bin
+
+export PATH
+[root@twausldnapp48 ~]#
+
+
+
+export JAVA_HOME=/usr/lib/jvm/java
+
+export PATH=$JAVA_HOME/bin:$PATH
+
+
+
+
+export JAVA_HOME_BIN=`which java`
+export JAVA_HOME_DIR=`dirname $JAVA_HOME_BIN`
+export JAVA_HOME=`dirname $JAVA_HOME_DIR`
+And for testing:
+
+echo $JAVA_HOME
+
+
+
+This is a very simple script to solve the problem
+
+export JAVA_HOME_BIN=`which java`
+export JAVA_HOME_DIR=`dirname $JAVA_HOME_BIN`
+export JAVA_HOME=`dirname $JAVA_HOME_DIR`
+And for testing:
+
+echo $JAVA_HOME
+
+
+export JAVA_HOME="/usr/lib/jvm/jdk-*" solves the issue
+
+https://stackoverflow.com/questions/24641536/how-to-set-java-home-in-linux-for-all-users
+
+
+
+
+[root@twausldnapp48 ~]# which java
+/usr/lib/jvm/java/bin/java
+[root@twausldnapp48 ~]# rpm -qa java*
+java-1.8.0-openjdk-devel-1.8.0.222.b10-0.el7_6.x86_64
+javapackages-tools-3.4.1-11.el7.noarch
+java-1.8.0-openjdk-headless-1.8.0.222.b10-0.el7_6.x86_64
+java-1.8.0-openjdk-1.8.0.222.b10-0.el7_6.x86_64
+[root@twausldnapp48 ~]#
+
+export PATH
+[root@twausldnapp49 ~]# which java
+/bin/java
+[root@twausldnapp49 ~]#  rpm -qa java*
+java-1.8.0-openjdk-1.8.0.222.b10-0.el7_6.x86_64
+javapackages-tools-3.4.1-11.el7.noarch
+java-1.8.0-openjdk-headless-1.8.0.222.b10-0.el7_6.x86_64
+java-1.8.0-openjdk-devel-1.8.0.222.b10-0.el7_6.x86_64
+[root@twausldnapp49 ~]#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+I am seeing that there are a lot of backend connections to mysql servers lying in CLOSE_WAIT by proxysql.
+
+> netstat -plant | grep -i "close_wait" | grep proxysql | wc -l
+
+lsof | awk '{ print $1 " " $2; }' | sort -rn | uniq -c | sort -rn | head -15
+
+19873
+
+We have the same issue. More than 50k connections waiting to be closed.
+
+We tried the perl script, but it did not work. We ended up using this one-liner:
+
+ss --tcp state CLOSE-WAIT '( dport = 120 )' --kill
+
+ss --tcp state CLOSE-WAIT
+
+ss --tcp state CLOSE-WAIT --kill
+
+netstat -anp | grep ':120 ' | grep CLOSE_WAIT | awk '{print $7}' | cut -d \/ -f1 | grep -oE "[[:digit:]]{1,}" | xargs kill
+
+netstat -anp |\
+grep ':80 ' |\
+grep CLOSE_WAIT |\
+awk '{print $7}' |\
+cut -d \/ -f1 |\
+grep -oE "[[:digit:]]{1,}" |\
+xargs kill
+
+
+
+
+echo off
+netstat -ano | find "CLOSE_WAIT" > out.txt
+FOR /F "tokens=5 delims= " %%I IN (
+    'netstat -ano ^| find "CLOSE_WAIT"'
+) DO (
+    taskkill /PID %%I /F
+)
+
+del out.txt
+
+netstat -ano | find "TIME_WAITT" > out.txt
+FOR /F "tokens=5 delims= " %%I IN (
+    'netstat -ano ^| find "TIME_WAITT"'
+) DO (
+    taskkill /PID %%I /F
+)
+del out.txt
+
+netstat -ano | find "127.0.0.1" > out.txt
+FOR /F "tokens=5 delims= " %%I IN (
+    'netstat -ano ^| find "127.0.0."'
+) DO (
+    taskkill /PID %%I /F
+)
+del out.txt
+
+netstat -ano | find "0.0.0.0" > out.txt
+FOR /F "tokens=5 delims= " %%I IN (
+    'netstat -ano ^| find "0.0.0.0"'
+) DO (
+    taskkill /PID %%I /F
+)
+del out.txt
+
+
+netstat -anp | grep 127.0.0.1 | grep CLOSE_WAIT | awk '{print $7}' | cut -d \/ -f1 | grep -oE "[[:digit:]]{1,}" | xargs kill
+
+ss --tcp state CLOSE-WAIT '( dport = 22 or dst 1.1.1.1 )' --kill
+
+
+
+
+
+
+
+
+
+
+
+The default file size will be 4TB or when it comes to NFS I can say max limit is 32768 but client is trying to upload the file value which is of 1048576.
+
+alternative from client end and let us know if it's necessary to make the changes
+
+Nfsv4 rsize and wsize NFS has a limit on the size of "chunks" of the file to read or write up to 32768 bytes
+Please request client to reduce the rsize and wsize within 32768 bytes as PowerScale supports 32k or less segments
+
+
+adjoin -S -n pwausldeapp13.app.hcscint.net adhcscint.net
+
+
+
+Yes, initially it seesm issue on NFS client. 
+
+Next steps:
+Please correct me if my understanding is not accurate. I will work with you to address this.
+Can you please provide more details about this environment:
+1. Please provide more details about the NFS Server (IP Address, Vendor, etc).
+
+- [root@pazssl56eap03 datalakedata]# df -TH /datalakedata
+Filesystem                                                       Type  Size  Used Avail Use% Mounted on
+nfs.waunas23.hcscint.net:/ifs/pwauesnas23/prod/nfs/pdatalakedata nfs4   28T   23T  5.0T  82% /datalakedata
+[root@pazssl56eap03 datalakedata]# nslookup nfs.waunas23.hcscint.net
+Server:         10.86.11.9
+Address:        10.86.11.9#53
+
+Non-authoritative answer:
+Name:   nfs.waunas23.hcscint.net
+Address: 10.136.196.204
+
+2. Did you identify any issue on the NFS Server?
+- Access time of NFS based File system(/datalakedata) is quite high in a mins and df -h output also got stuck/hung
+
+real    1m57.910s
+user    0m0.001s
+sys     0m0.002s
+
+[root@pazssl56eap01 ~]# ls -lrth /datalakedata |wc -l
+
+^C
+
+[root@pazssl56eap01 ~]# df -TH /datalakedata
+
+^C
+
+3. What is the timezone for the logs “Apr 24 05:03:39” ?
+ - its frequently generally alerts almost all days since 3days 
+4. Can you please share the sos report?
+ Attached now pls review 
+ 
+ 
+ 
+ 
+ 
+ Can you please run the following commands on pazssl56eap01:
+               # systemctl status nfs
+               # rpcdebug -m rpc -c all
+               # rpcdebug -m rpc -s all
+               # mountstats
+
+Also, can you please restart the nfs service from pazssl56eap01:
+               # systemctl restart nfs
+
+15 minutes after the restart run again the commands:
+               # systemctl status nfs
+               # rpcdebug -m rpc -c all
+               # rpcdebug -m rpc -s all
+               # mountstats
+
+
+we already raised case with Microsoft for parmanent solutions. 
+For the time being - we are going to closed 
+support request ID	2304260040003190
+Support Request: NFS FS not responding, still trying error - pazssl56eap01/02/03
+
+
+
+
+
+ 
+
+The allowed maximum is communicated to an NFS client when it mounts the NFS share.		
+	
+It seems the large RPCs got rejected and dropped by the NFS server and generate the RPC: fragment too large do to the new maximum.
+This will cause the NFS clients to see the change in the maximum rsize/wsize permitted by the NFS server.		
+
+Below are maximum allowed rsize/wsize from NFS Client, I look forward to know what are the value defined by NFS Server where NAS path created. 
+
+maximum allowed rsize/wsize 		
+	
+		
+		
+A problem can occur if the NFS server chooses to lower this value while NFS clients have a share mounted. 
+The way this can occur is if the NFS server is rebooted with less memory. Depending on the change in the
+ amount of memory, the NFS server may select a smaller rsize/wsize maximum.		
+		
+		
+But NFS clients which already had the NFS share mounted from before the NFS server restarted will not know the maximum allowed rsize/wsize changed.		
+		
+The allowed maximum is communicated to an NFS client when it mounts the NFS share. 
+The NFS client will still think it is permitted to send RPCs using the old, larger size.
+ But the large RPCs get rejected and dropped by the NFS server and generate the RPC: fragment too large do to the new maximum.		
+
+
+
+
+
+
+
+
+
+
+As we discussed it multiple time , that we are seriously reducing with AIX part and Linux count is increasing .
+We all as a one team need to be ready for facing all type of issue at least the repeating and a basic one for Linux .
+
+I am attaching a excel sheet with action item which need to be closed for all AIX resources in Team by 15th March.
+
+
+
+Thanks Mamta and Mohan for keeping a daily track and making sure server issue resolved permanently and should not repeat .
+We should see our  Feb month resolution count in March numbers .
+
+We need to continuously  keep a same pace on Monitoring incident analysis and achieve better result every month 
+
+Practice we need to carry on and make a part of daily every shift checklist –
+
+1)	Making sure Prod and test Dynatrace Dashboard should be green and there is not OS related FS like /, /var, /opt  which about to reach the threshold . Need to stop there only before INC generated for it on threshold
+2)	Make sure while resolving we are doing a permanent resolution and alert should not repeat again by analyzing a 2 months data and a cause of hike
+3)	@Shift Leads make sure we are achieving this in every shift and giving and accepting same in handover .
+
+
+
+
+Thanks and cordial regards,
+-------------------------------
+Pradeep Kumar |  M +91 9811462782
+HCL Unix Operation | Infra Delivery 
+ HCL_Unix@bcbsil.com 
+
+
+
+
+Hello,
+
+Thank you for the reply. 
+
+As switch root is failing you will need to collect the information from rescue mode outside chroot. Follow below action plan :
+
+- Attach ISO to the system and boot the system in rescue mode using ISO. Refer below support article for the details :
+
+
+
+--------------------
+  How to boot Red Hat Enterprise Linux to Rescue Mode for Data Collection (sosreport, vmcore, etc.) 
+  https://access.redhat.com/articles/3405661
+
+  Enabling networking in rescue environment without chrooting 
+  https://access.redhat.com/solutions/2626631
+--------------------
+
+- Do not run chroot command. Run below commands outside chroot :
+
+~~~~~~~~~~~~~~~~~~
+# rpm -Va --root=/mnt/sysimage &> /tmp/rpmva.out
+# egrep -v " c | d | g |opt" /tmp/rpmva.out | awk '{print $NF}' 
+| sort | uniq | xargs rpm -qf --root=/mnt/sysimage 2>/dev/null | sort | uniq &> /tmp/pkgs.txt 
+
+
+Attach /tmp/rpmva.out and /tmp/pkgs.txt files to the case. 
+
+- Also share output of below commands from outside chroot :
+
+~~~~~~~~~~~~~~~~~
+ls -l / | grep ">"
+# df -h
+# ls -al /mnt/sysimage 
+# cat /mnt/sysimage/etc/fstab
+# ls -al /mnt/sysimage/bin/bash
+~~~~~~~~~~~~~~~~~
+
+
+Thanks & Regards,
+Payal Gupta
+Global Support Services
+Red Hat
+
+
+
+dmesg -T | grep INFO
+
+
+lsblk -o +uuid,name
+
+mount /dev/sdb1 /mnt
+
+mount -o remount,rw /dev/sdb1 /mnt
+
+
+mount -t ext4 /dev/sdb1 /mnt
+
+blkid | grep sdb1
+
+
+
+As per update from unix team, 3900 ctm process  are running under this agent twauslofca001 and  agent got stuck due to this issue.
+
+ps -ef | grep -i ctm | wc -l
+3900
+==================================
+
+Hi Unix Team/Admin Team,
+
+We are facing Issue in test Environment when we do a  SFTP ,we are not getting any error nor file is getting transferred 
+,please see the below screenshot when manually tried to SFTP the file.
+an you  please help us to resolve the issue as this is affecting our timelines.
+
+ 
+
+Here are the Server Details and File details: 
+
+Test unix server : "twauslaenapp09.app.test.hcscint.net"
+Sunfire SFTP Address :  HCSC2SUNFIRE@10.134.192.41
+File Name : HCSC_test_sunfire_Provider_08232023.txt
+
+
+
+
+hdgovt01 09 # /datalakedata/tst/govt/consumption/xferout/provider/sunfire/
+
+sftp HCSC2SUNFIRE@10.134.192.41
+lcd datalakedat/tst/govt/consumption/xferout/provider/sunfire
+mput HCSC_test_sunfire_Provider_08232023.txt
+
+
+
+torubelsooting 
+sftp -v fx_zzzzz@filex-m1.oclc.org <<EOF
+lcd /zzzzz/bib/xfer/out/
+cd /xfer/metacoll/in/bib/
+put 1234567.zzzzz.bibs.20200101.mrc
+quit
+
+
+sftp -o port=22 -o IdentityFile=sftp_file_address HCSC2SUNFIRE@10.134.192.41
+
+sftp -vvv user@xxx.xxx.xxx.xxx
+
+
+
+oot cause: After pwausldnapp159.app.hcscint.net server got crashed. SSSD service did not come up which caused all NPID's not to
+ authenticate with servers.  
+Resolution : Unix team brought the SSSD service up and running on crashed server pwausldnapp159.app.hcscint.net.
+
+
+
+
+
+
+
+
+[root@dwausltcap0043 ~]# nc -vz 10.140.194.161 22
+Ncat: Version 7.50 ( https://nmap.org/ncat )
+Ncat: Connected to 10.140.194.161:22.
+Ncat: 0 bytes sent, 0 bytes received in 0.01 seconds.
+[root@dwausltcap0043 ~]# ping  10.140.194.161
+[root@dwausltcap0043 ~]# nc -vz 10.140.194.161 22
+Ncat: Version 7.50 ( https://nmap.org/ncat )
+Ncat: Connected to 10.140.194.161:22.
+Ncat: 0 bytes sent, 0 bytes received in 0.01 seconds.
+[root@dwausltcap0043 ~]# ping  10.140.194.161
+
